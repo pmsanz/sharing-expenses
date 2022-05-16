@@ -18,35 +18,30 @@ namespace SharingExpenses.DataSeeders
         {
             if (!_baseDBContext.Users.Any())
             {
-                var newUsers = new List<Users>()
+                var newSeeds = new List<Users>()
                 {
                     new Users()
                     {
-                        Id = 0,
-                        Name = "Paul",
+                        
+                        Name = "Jhon",
                         Lastname = "Thomson"
                     },
                     new Users()
                     {
-                        Id = 1,
-                        Name = "Ana",
+                        
+                        Name = "Peter",
                         Lastname = "Smith"
                     },
                     new Users()
                     {
-                        Id = 2,
-                        Name = "Bob",
+                       
+                        Name = "Mary",
                         Lastname = "Hellman"
-                    },
-                    new Users()
-                    {
-                        Id = 3,
-                        Name = "Jony",
-                        Lastname = "Rodriguez"
                     }
+                   
                 };
 
-                _baseDBContext.Users.AddRange(newUsers);
+                _baseDBContext.Users.AddRange(newSeeds);
                 _baseDBContext.SaveChanges();
             }
 
