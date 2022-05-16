@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SharingExpenses.DbContexts;
 
@@ -11,9 +12,10 @@ using SharingExpenses.DbContexts;
 namespace SharingExpenses.Migrations
 {
     [DbContext(typeof(BaseDBContext))]
-    partial class BaseDBContextModelSnapshot : ModelSnapshot
+    [Migration("20220516155155_modify-UsersAndGroups")]
+    partial class modifyUsersAndGroups
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

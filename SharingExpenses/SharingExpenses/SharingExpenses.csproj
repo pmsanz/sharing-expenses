@@ -22,4 +22,10 @@
     <ProjectReference Include="..\SharingExpenses.Models\SharingExpenses.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\Groups\" />
+    <Folder Include="Controllers\Users\" />
+    <Folder Include="Controllers\Payments\" />
+  </ItemGroup>
+
 </Project>
