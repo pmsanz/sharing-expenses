@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SharingExpenses.DbContexts;
 
@@ -11,9 +12,10 @@ using SharingExpenses.DbContexts;
 namespace SharingExpenses.Migrations
 {
     [DbContext(typeof(BaseDBContext))]
-    partial class BaseDBContextModelSnapshot : ModelSnapshot
+    [Migration("20220516163508_add-totalCost-on-Groups")]
+    partial class addtotalCostonGroups
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -80,7 +82,7 @@ namespace SharingExpenses.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("TotalCost")
-                        .HasColumnType("decimal(10,2)");
+                        .HasColumnType("decimal(5,2)");
 
                     b.HasKey("Id");
 
