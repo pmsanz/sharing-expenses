@@ -12,6 +12,9 @@ namespace SharingExpenses.Models.DbModels
         public int OwnerId { get; set; }
         public int GroupId { get; set; }
 
+        [Required]
+        public string Name { get; set; }
+
         [Column(TypeName = "decimal(5, 2)")]
         public decimal Cost { get; set; }
         public Users Owner { get; set; }

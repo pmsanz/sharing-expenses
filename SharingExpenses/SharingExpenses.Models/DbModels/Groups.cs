@@ -13,6 +13,9 @@ namespace SharingExpenses.Models.DbModels
     {
         public int Id { get; set; }
         public string Name { get; set; }
+
+        [Column(TypeName = "decimal(10, 2)")]
+        public decimal TotalCost { get; set; }
         public ICollection<Users> Users { get; set; }
         public ICollection<Expenses> Expenses { get; set; }
         public ICollection<Payments> Payments { get; set; }
