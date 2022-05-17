@@ -17,7 +17,7 @@ namespace SharingExpenses.Controllers
         [HttpGet("{groupid}")]
         public IEnumerable<ExpensesDTO> GetExpenses(int groupid)
         {
-            
+
             var expenses = _context.Expenses
                 .AsNoTracking()
                 .Include(x => x.Owner)
@@ -31,7 +31,8 @@ namespace SharingExpenses.Controllers
             foreach (var item in expenses)
             {
                 var expense = new ExpensesDTO()
-                {   Id = item.Id,
+                {
+                    Id = item.Id,
                     Name = item.Name,
                     Cost = item.Cost,
                     User = item.Owner.Name,
@@ -46,8 +47,8 @@ namespace SharingExpenses.Controllers
 
         }
 
-        [HttpPost]        
-        public ExpensesDTO AddOrUpdateExpenses([FromBody]ExpensesDTO_Edit expensesDTO_Edit)
+        [HttpPost]
+        public ExpensesDTO AddOrUpdateExpenses([FromBody] ExpensesDTO_Edit expensesDTO_Edit)
         {
             //if exists id -> update, else create expenses
             var expense = new Expenses();
@@ -62,10 +63,10 @@ namespace SharingExpenses.Controllers
 
             if (expensesDTO_Edit.Id == null)
             {
-                
-                
 
-                if(user != null && group != null)
+
+
+                if (user != null && group != null)
                 {
                     expense = new Expenses()
                     {
@@ -84,14 +85,14 @@ namespace SharingExpenses.Controllers
                 {
                     throw new Exception("Data is not correct, verify user && group");
                 }
-                               
+
 
             }
             else
             {
                 expense = _context.Expenses.FirstOrDefault(x => x.Id.Equals(expensesDTO_Edit.Id));
-                
-                if(expense == null)
+
+                if (expense == null)
                     throw new Exception("Id doesn't exists in the Data Base.");
 
                 expense.Name = expensesDTO_Edit.Name;
@@ -102,17 +103,17 @@ namespace SharingExpenses.Controllers
 
 
             }
-            
+
 
             //update group TotalCost
             var cost = _context.Expenses.Where(x => x.GroupId.Equals(expense.GroupId)).Sum(x => x.Cost);
             group.TotalCost = cost;
 
-           _context.Groups.Update(group);
-           _context.SaveChanges();
+            _context.Groups.Update(group);
+            _context.SaveChanges();
 
             //mapping
-            
+
             ExpensesDTO result = new ExpensesDTO()
             {
                 Id = expense.Id,
@@ -122,6 +123,73 @@ namespace SharingExpenses.Controllers
                 Group = expense.Group.Name
 
             };
+
+            return result;
+
+        }
+
+        [HttpGet("{groupid}")]
+        public IEnumerable<ExpensesBringBackDTO> GetResultingPayments(int groupid)
+        {
+            
+            var group = _context.Groups
+                .AsNoTracking()
+                .FirstOrDefault(x => x.Id.Equals(groupid));
+
+            if (group == null)
+                throw new Exception("Group doesn't exists.");
+
+            var expenses_by_users = _context.Expenses
+                .AsNoTracking()
+                .Include(x => x.Owner)
+                .Where(x => x.GroupId.Equals(groupid))
+                .GroupBy( x => x.OwnerId)
+                .Select( g => new {
+                                    UserId = g.First().OwnerId,
+                                    Value = g.Sum(s => s.Cost) 
+                                  })
+                .ToDictionary( x => x.UserId, x => x.Value);
+
+            var users = _context.Users
+                .AsNoTracking()
+                .Where(x => x.Groups.Contains(group));
+
+            var count_users = users.Count();
+
+            decimal total_cost = group.TotalCost;
+
+            ExpensesBringBackDTO[] result = new ExpensesBringBackDTO[count_users];
+
+            if (count_users > 0)
+            {
+                var total_per_user = total_cost / count_users;
+                
+                int index = 0;
+
+                foreach (var user in users)
+                {
+                    decimal expended_by_user = 0;
+                    ExpensesBringBackDTO dto = new ExpensesBringBackDTO();
+                    
+                    dto.User = String.Format("{0} {1}", user.Name, user.Lastname);
+
+                    if (expenses_by_users.TryGetValue(user.Id, out expended_by_user))
+                    {
+                        if (expended_by_user > total_per_user)
+                            dto.Must_Receive = expended_by_user - total_per_user;
+                        else
+                            dto.Must_Pay = total_per_user - expended_by_user;
+                    }
+                    else
+                    {
+                        dto.Must_Pay = total_per_user;
+                    }
+
+                    result[index++] = dto;
+
+                }
+
+            }
 
             return result;
 
