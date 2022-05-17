@@ -59,6 +59,74 @@ namespace SharingExpenses.TestProject
         }
 
         [Fact]
+        public void Test_Modify_Expenses()
+        {
+
+
+            // Use a clean instance of the context to run the test
+            using (var context = new BaseDBContext(_options))
+            {
+                var controller = new ExpensesController(context);
+                ExpensesDTO_Edit expensesDTO = new ExpensesDTO_Edit() { 
+                    
+                    Id = 1,
+                    Name = "Garage",
+                    Cost = Convert.ToDecimal(333),
+                    User = 1,
+                    Group = 1
+                                    
+                };
+
+                var response = controller.AddOrUpdateExpenses(expensesDTO);
+
+                Assert.Equal(expensesDTO.Id, response.Id);
+                Assert.Equal(expensesDTO.Name, response.Name);
+                Assert.Equal(expensesDTO.Cost, response.Cost);
+                Assert.Equal("Jhon", response.User);
+                Assert.Equal("Best Travel!", response.Group);
+
+
+            }
+
+
+
+        }
+        [Fact]
+        public void Test_Add_Expenses()
+        {
+
+
+            // Use a clean instance of the context to run the test
+            using (var context = new BaseDBContext(_options))
+            {
+                var controller = new ExpensesController(context);
+                ExpensesDTO_Edit expensesDTO = new ExpensesDTO_Edit()
+                {
+
+                    
+                    Name = "Garage",
+                    Cost = Convert.ToDecimal(333),
+                    User = 1,
+                    Group = 1
+
+                };
+
+                var response = controller.AddOrUpdateExpenses(expensesDTO);
+
+                Assert.Equal(3,expensesDTO.Id);
+                Assert.Equal(expensesDTO.Name, response.Name);
+                Assert.Equal(expensesDTO.Cost, response.Cost);
+                Assert.Equal("Jhon", response.User);
+                Assert.Equal("Best Travel!", response.Group);
+
+
+            }
+
+
+
+        }
+
+        [Fact]
         public void Test_Expenses_Not_Found()
         {
 
