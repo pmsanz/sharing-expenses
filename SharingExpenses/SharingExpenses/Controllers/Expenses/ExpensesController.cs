@@ -4,7 +4,7 @@ using SharingExpenses.DbContexts;
 using SharingExpenses.Models.DbModels;
 using SharingExpenses.Models.DTO.Expenses;
 
-namespace WebApplication2.Controllers
+namespace SharingExpenses.Controllers
 {
     [ApiController]
     [Route("[controller]")]
