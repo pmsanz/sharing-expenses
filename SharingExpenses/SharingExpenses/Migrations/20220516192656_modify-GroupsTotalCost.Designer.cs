@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SharingExpenses.DbContexts;
 
@@ -11,9 +12,10 @@ using SharingExpenses.DbContexts;
 namespace SharingExpenses.Migrations
 {
     [DbContext(typeof(BaseDBContext))]
-    partial class BaseDBContextModelSnapshot : ModelSnapshot
+    [Migration("20220516192656_modify-GroupsTotalCost")]
+    partial class modifyGroupsTotalCost
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -104,11 +106,16 @@ namespace SharingExpenses.Migrations
                     b.Property<int>("ToUserId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("UsersId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("GroupId");
 
                     b.HasIndex("ToUserId");
+
+                    b.HasIndex("UsersId");
 
                     b.ToTable("Payments");
                 });
@@ -154,13 +161,13 @@ namespace SharingExpenses.Migrations
                     b.HasOne("SharingExpenses.Models.DbModels.Groups", "Group")
                         .WithMany("Expenses")
                         .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("SharingExpenses.Models.DbModels.Users", "Owner")
-                        .WithMany("Expenses")
+                        .WithMany()
                         .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Group");
@@ -181,6 +188,10 @@ namespace SharingExpenses.Migrations
                         .HasForeignKey("ToUserId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.HasOne("SharingExpenses.Models.DbModels.Users", null)
+                        .WithMany("Expenses")
+                        .HasForeignKey("UsersId");
 
                     b.Navigation("Group");
 

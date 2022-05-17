@@ -4,19 +4,20 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SharingExpenses.Models.DbModels
 {
-    [Table("Expenses", Schema = "SharingExpenses")]
+    
     public class Expenses
     {
 
-        [Key]
         public int Id { get; set; }
-        [Required]
         public int OwnerId { get; set; }
+        public int GroupId { get; set; }
+
+        [Required]
+        public string Name { get; set; }
 
         [Column(TypeName = "decimal(5, 2)")]
         public decimal Cost { get; set; }
-        
-        [ForeignKey(nameof(OwnerId))]
         public Users Owner { get; set; }
+        public Groups Group { get; set; }
     }
 }

@@ -9,25 +9,23 @@ using System.Threading.Tasks;
 namespace SharingExpenses.Models.DbModels
 {
 
-    [Table("Payments", Schema = "SharingExpenses")]
+    
     public class Payments
     {
 
-        [Key]
+       
         public int Id { get; set; }
-        [Required]
-        public int FromUserId { get; set; }
-        [Required]
+        
         public int ToUserId { get; set; }
+        
+        public int GroupId { get; set; }
 
         [Column(TypeName = "decimal(5, 2)")]
         public decimal? Amount { get; set; }
-
-        [ForeignKey(nameof(FromUserId))]
-        public Users FromUser { get; set; }
-
-        [ForeignKey(nameof(ToUserId))]
+                
         public Users ToUser { get; set; }
+        
+        public Groups Group { get; set; }
 
     }
 }

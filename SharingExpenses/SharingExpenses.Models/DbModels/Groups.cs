@@ -8,19 +8,17 @@ using System.Threading.Tasks;
 
 namespace SharingExpenses.Models.DbModels
 {
-    [Table("Groups", Schema = "SharingExpenses") ]
+    
     public class Groups
     {
-        [Key]
         public int Id { get; set; }
-
         public string Name { get; set; }
-                
-        public virtual ICollection<Users> Users { get; set; }
 
-        public virtual ICollection<Expenses> Expenses { get; set; }
-
-        public virtual ICollection<Payments> Payments { get; set; }
+        [Column(TypeName = "decimal(10, 2)")]
+        public decimal TotalCost { get; set; }
+        public ICollection<Users> Users { get; set; }
+        public ICollection<Expenses> Expenses { get; set; }
+        public ICollection<Payments> Payments { get; set; }
 
 
     }

@@ -16,50 +16,66 @@ namespace SharingExpenses.DbContexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Payments>()
+            .HasKey(x => x.Id);
+
+            modelBuilder.Entity<Payments>()
+                 .HasOne(x => x.ToUser)
+                 .WithMany(x => x.PaymentsTo)
+                 .HasForeignKey(x => x.ToUserId)
+                 .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Expenses>()
+           .HasKey(x => x.Id);
+
             modelBuilder.Entity<Expenses>()
                 .HasOne(x => x.Owner)
                 .WithMany()
                 .IsRequired(true)
                 .OnDelete(DeleteBehavior.NoAction);
 
-
-            modelBuilder.Entity<Groups>()
-                .HasMany(x => x.Users);
-
-            modelBuilder.Entity<Groups>()
-                .HasMany(x => x.Payments);
-
-            modelBuilder.Entity<Groups>()
-                .HasMany(x => x.Expenses);
-
-
-            modelBuilder.Entity<Payments>()
-                .HasOne(x => x.FromUser)
+            modelBuilder.Entity<Expenses>()
+                .HasOne(x => x.Group)
                 .WithMany()
                 .IsRequired(true)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<Payments>()
-                .HasOne(x => x.ToUser)
-                .WithMany()
-                .IsRequired(true)
-                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<Groups>()
+           .HasKey(x => x.Id);
 
-            modelBuilder.Entity<Users>();
+            modelBuilder.Entity<Groups>()
+                .HasMany(x => x.Users)
+                .WithMany(x => x.Groups);
 
+            modelBuilder.Entity<Groups>()
+                .HasMany(x => x.Expenses)
+                .WithOne(x => x.Group)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Groups>()
+                .HasMany(x => x.Payments)
+                .WithOne(x => x.Group);
+
+            modelBuilder.Entity<Users>()
+                .HasKey(x => x.Id);
+
+            modelBuilder.Entity<Users>()
+                .HasMany(x => x.Expenses)
+                .WithOne(x => x.Owner)
+                .OnDelete(DeleteBehavior.Cascade);
 
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-
-            IConfigurationRoot configuration = new ConfigurationBuilder()
+#if !TEST
+                IConfigurationRoot configuration = new ConfigurationBuilder()
              .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
              .AddJsonFile("appsettings.json")
              .Build();
 
             optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-
+#endif
 
         }
     }

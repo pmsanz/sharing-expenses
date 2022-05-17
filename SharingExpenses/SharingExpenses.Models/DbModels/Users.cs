@@ -8,20 +8,21 @@ using System.Threading.Tasks;
 
 namespace SharingExpenses.Models.DbModels
 {
-    [Table("User", Schema = "Config")]
+    
     public class Users
     {
         
-        [Key]
         public int Id { get; set; }
 
-        
-        [Required]
         public string Name { get; set; }
 
-        
-        [Required]
         public string Lastname { get; set; }
+
+        public ICollection<Groups> Groups { get; set; }
+
+        public ICollection<Expenses> Expenses { get; set; }
+
+        public ICollection<Payments> PaymentsTo { get; set; }
 
 
     }
