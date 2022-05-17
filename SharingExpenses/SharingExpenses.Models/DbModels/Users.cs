@@ -20,7 +20,7 @@ namespace SharingExpenses.Models.DbModels
 
         public ICollection<Groups> Groups { get; set; }
 
-        public ICollection<Payments> Expenses { get; set; }
+        public ICollection<Expenses> Expenses { get; set; }
 
         public ICollection<Payments> PaymentsTo { get; set; }
 

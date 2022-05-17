@@ -152,6 +152,7 @@ namespace SharingExpenses.Controllers
 
             var users = _context.Users
                 .AsNoTracking()
+                .Include(x => x.Groups)
                 .Where(x => x.Groups.Contains(group));
 
             var count_users = users.Count();

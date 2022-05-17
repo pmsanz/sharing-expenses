@@ -49,7 +49,8 @@ namespace SharingExpenses.DbContexts
 
             modelBuilder.Entity<Groups>()
                 .HasMany(x => x.Expenses)
-                .WithOne(x => x.Group);
+                .WithOne(x => x.Group)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Groups>()
                 .HasMany(x => x.Payments)
@@ -58,18 +59,23 @@ namespace SharingExpenses.DbContexts
             modelBuilder.Entity<Users>()
                 .HasKey(x => x.Id);
 
+            modelBuilder.Entity<Users>()
+                .HasMany(x => x.Expenses)
+                .WithOne(x => x.Owner)
+                .OnDelete(DeleteBehavior.Cascade);
+
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-        #if TEST
-            IConfigurationRoot configuration = new ConfigurationBuilder()
+#if !TEST
+                IConfigurationRoot configuration = new ConfigurationBuilder()
              .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
              .AddJsonFile("appsettings.json")
              .Build();
 
             optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
-        #endif
+#endif
 
         }
     }

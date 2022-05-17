@@ -4,9 +4,14 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <Configurations>Debug;Release;TEST</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702;CS8618;</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='TEST|AnyCPU'">
     <NoWarn>1701;1702;CS8618;</NoWarn>
   </PropertyGroup>
 
@@ -31,6 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Controllers\Groups\" />
     <Folder Include="Controllers\Payments\" />
     <Folder Include="Controllers\Users\" />
   </ItemGroup>
