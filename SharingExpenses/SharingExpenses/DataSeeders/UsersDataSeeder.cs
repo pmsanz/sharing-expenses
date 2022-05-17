@@ -18,25 +18,32 @@ namespace SharingExpenses.DataSeeders
         {
             if (!_baseDBContext.Users.Any())
             {
+                var groups = _baseDBContext.Groups.Where(x => x.Name.Equals("Amazing Holiday's Travel!!!")).ToArray();
+                if (groups == null)
+                    throw new Exception();
+
                 var newSeeds = new List<Users>()
                 {
                     new Users()
                     {
                         
                         Name = "Jhon",
-                        Lastname = "Thomson"
+                        Lastname = "Thomson",
+                        Groups = groups
                     },
                     new Users()
                     {
                         
                         Name = "Peter",
-                        Lastname = "Smith"
+                        Lastname = "Smith",
+                        Groups = groups
                     },
                     new Users()
                     {
                        
                         Name = "Mary",
-                        Lastname = "Hellman"
+                        Lastname = "Hellman",
+                        Groups = groups
                     }
                    
                 };

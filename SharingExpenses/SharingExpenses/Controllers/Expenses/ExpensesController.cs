@@ -128,7 +128,7 @@ namespace SharingExpenses.Controllers
 
         }
 
-        [HttpGet("{groupid}")]
+        [HttpGet("resultingpayments/{groupid}")]
         public IEnumerable<ExpensesBringBackDTO> GetResultingPayments(int groupid)
         {
             

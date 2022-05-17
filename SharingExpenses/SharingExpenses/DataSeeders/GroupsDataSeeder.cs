@@ -25,7 +25,8 @@ namespace SharingExpenses.DataSeeders
                         Name = "Amazing Holiday's Travel!!!",
                         Users = _baseDBContext.Users.Take(4).ToList(),
                         Payments = new List<Payments>(),
-                        Expenses = new List<Expenses>()
+                        Expenses = new List<Expenses>(),
+                        TotalCost = Convert.ToDecimal(750.00)
 
                     }
                 };

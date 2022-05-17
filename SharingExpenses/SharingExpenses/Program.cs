@@ -24,11 +24,12 @@ void SeedData(IHost host)
     var scopedFactory = host.Services.GetService<IServiceScopeFactory>();
     using (var scope = scopedFactory.CreateScope())
     {
-        var users = scope.ServiceProvider.GetService<UsersDataSeeder>();
-        users.Seed();
-
+        
         var groups = scope.ServiceProvider.GetService<GroupsDataSeeder>();
         groups.Seed();
+
+        var users = scope.ServiceProvider.GetService<UsersDataSeeder>();
+        users.Seed();
 
         var expenses = scope.ServiceProvider.GetService<ExpensesDataSeeder>();
         expenses.Seed();
